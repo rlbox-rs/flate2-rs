@@ -22,6 +22,7 @@ libz-ng-sys = { version = "1.1.8", optional = true }
 cloudflare-zlib-sys = { version = "0.3.0", optional = true }
 miniz_oxide = { version = "0.7.1", optional = true, default-features = false, features = ["with-alloc"] }
 crc32fast = "1.2.0"
+foreign-types = { version = "0.5.0", optional = true }
 
 [target.'cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))'.dependencies]
 miniz_oxide = { version = "0.7.1", default-features = false, features = ["with-alloc"] }
@@ -31,7 +32,7 @@ rand = "0.8"
 quickcheck = { version = "1.0", default-features = false }
 
 [features]
-default = ["rust_backend"]
+default = ["zlib", "foreign-types"]
 any_zlib = ["any_impl"] # note: this is not a real user-facing feature
 any_impl = [] # note: this is not a real user-facing feature
 zlib = ["any_zlib", "libz-sys"]
@@ -41,6 +42,7 @@ zlib-ng = ["any_zlib", "libz-ng-sys"]
 cloudflare_zlib = ["any_zlib", "cloudflare-zlib-sys"]
 rust_backend = ["miniz_oxide", "any_impl"]
 miniz-sys = ["rust_backend"] # For backwards compatibility
+foreign-types = ["dep:foreign-types"]
 
 [package.metadata.docs.rs]
 all-features = true

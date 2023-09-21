@@ -418,4 +418,22 @@ mod c_backend {
             mem::size_of::<mz_stream>() as c_int,
         )
     }
+
+    #[cfg(feature = "foreign-types")]
+    mod wrapped {
+        use foreign_types::foreign_type;
+
+        fn fakefree(_: *mut super::mz_stream) {
+            panic!("this type must be on the stack");
+        }
+
+        foreign_type! {
+            pub unsafe type Zstream {
+                type CType = super::mz_stream;
+                fn drop = fakefree;
+            }
+        }
+    }
+    #[cfg(feature = "foreign-types")]
+    pub use wrapped::*;
 }
